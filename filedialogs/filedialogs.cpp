@@ -663,7 +663,11 @@ namespace {
         bool inside = false;
         int x = 0, y = 0, w = 0, h = 0;
         SDL_GetWindowPosition(window, &x, &y);
+        #if !defined(IFD_USE_OPENGL)
         if (!SDL_GetRendererOutputSize(SDL_GetRenderer(window), &w, &h)) {
+        #else
+        SDL_GL_GetDrawableSize(window, &w, &h); {
+        #endif
           int numDisplays = SDL_GetNumVideoDisplays();
           if (numDisplays >= 1) {
             for (int i = 0; i < numDisplays; i++) {
