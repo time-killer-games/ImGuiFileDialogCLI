@@ -578,6 +578,10 @@ namespace {
         SetWindowPos(hWnd, ((ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) ?  HWND_TOPMOST : HWND_TOP),
         0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
         if (!ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").empty()) {
+          if (IsIconic((HWND)(void *)(std::uintptr_t)strtoull(
+          ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10)))
+          ShowWindow((HWND)(void *)(std::uintptr_t)strtoull(
+          ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10), SW_RESTORE);
           SetWindowLongPtrW(hWnd, GWLP_HWNDPARENT, (LONG_PTR)(std::uintptr_t)strtoull(
           ngs::fs::environment_get_variable("IMGUI_DIALOG_PARENT").c_str(), nullptr, 10));
           RECT parentFrame; GetWindowRect((HWND)(void *)(std::uintptr_t)strtoull(
@@ -665,7 +669,7 @@ namespace {
             for (int i = 0; i < numDisplays; i++) {
               if (!SDL_GetDisplayBounds(i, &rect)) {
                 if (x >= rect.x && y >= rect.y &&
-                  x + w <= rect.x + rect.w && y + h <= rect.y + rect.h) {
+                x + w <= rect.x + rect.w && y + h <= rect.y + rect.h) {
                   inside = true;
                   break;
                 }
