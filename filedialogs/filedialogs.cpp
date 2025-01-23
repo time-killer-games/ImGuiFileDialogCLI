@@ -541,7 +541,7 @@ namespace {
       } else if (ifd::FileDialog::Instance().IsDone("GetOpenFileNames")) {
         if (ifd::FileDialog::Instance().HasResult()) {
           const std::vector<ghc::filesystem::path>& res = ifd::FileDialog::Instance().GetResults();
-          for (const auto& r : res) result += r.string() + "\n";
+          for (const auto& r : res) { message_pump(); result += r.string() + "\n"; }
           if (!result.empty()) result.pop_back();
         }
         ifd::FileDialog::Instance().Close();
@@ -671,6 +671,7 @@ namespace {
           int numDisplays = SDL_GetNumVideoDisplays();
           if (numDisplays >= 1) {
             for (int i = 0; i < numDisplays; i++) {
+              message_pump();
               if (!SDL_GetDisplayBounds(i, &rect)) {
                 if (x >= rect.x && y >= rect.y &&
                 x + w <= rect.x + rect.w && y + h <= rect.y + rect.h) {
